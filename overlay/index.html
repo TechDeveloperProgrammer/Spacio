@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Smart Overlay - Browser Source</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div id="overlay-container" class="overlay-container">
+        <!-- Particle Canvas -->
+        <canvas id="particle-canvas"></canvas>
+        
+        <!-- Background Layer -->
+        <div id="background-layer" class="background-layer"></div>
+        
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="content-wrapper">
+            <!-- Twitch Panel -->
+            <div id="twitch-panel" class="panel twitch-panel hidden">
+                <div class="panel-header">
+                    <div class="avatar-container">
+                        <img id="twitch-avatar" class="avatar" src="" alt="Avatar">
+                        <div class="live-indicator">LIVE</div>
+                    </div>
+                    <div class="stream-info">
+                        <h2 id="twitch-username" class="username">@username</h2>
+                        <p id="twitch-title" class="stream-title">Stream Title</p>
+                        <p id="twitch-category" class="category">Category</p>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-icon">👁️</span>
+                        <span id="twitch-viewers" class="stat-value">0</span>
+                        <span class="stat-label">Viewers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">❤️</span>
+                        <span id="twitch-followers" class="stat-value">0</span>
+                        <span class="stat-label">Followers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">⭐</span>
+                        <span id="twitch-subscribers" class="stat-value">0</span>
+                        <span class="stat-label">Subs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">💎</span>
+                        <span id="twitch-bits" class="stat-value">0</span>
+                        <span class="stat-label">Bits</span>
+                    </div>
+                </div>
+                
+                <div class="uptime-container">
+                    <span id="twitch-uptime" class="uptime">00:00:00</span>
+                </div>
+                
+                <div class="goals-container">
+                    <div class="goal-bar">
+                        <div id="follower-goal" class="goal-progress" style="width: 0%"></div>
+                    </div>
+                    <span id="follower-goal-text" class="goal-text">0 / 1000 Followers</span>
+                </div>
+                
+                <div id="twitch-events" class="events-container"></div>
+            </div>
+            
+            <!-- TikTok Panel -->
+            <div id="tiktok-panel" class="panel tiktok-panel hidden">
+                <div class="panel-header">
+                    <div class="avatar-container">
+                        <img id="tiktok-avatar" class="avatar" src="" alt="Avatar">
+                        <div class="live-indicator tiktok">LIVE</div>
+                    </div>
+                    <div class="stream-info">
+                        <h2 id="tiktok-username" class="username">@username</h2>
+                        <p id="tiktok-title" class="stream-title">Live Stream</p>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-icon">👁️</span>
+                        <span id="tiktok-viewers" class="stat-value">0</span>
+                        <span class="stat-label">Viewers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">❤️</span>
+                        <span id="tiktok-likes" class="stat-value">0</span>
+                        <span class="stat-label">Likes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">💎</span>
+                        <span id="tiktok-gifts" class="stat-value">0</span>
+                        <span class="stat-label">Gifts</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">👥</span>
+                        <span id="tiktok-followers" class="stat-value">0</span>
+                        <span class="stat-label">Fans</span>
+                    </div>
+                </div>
+                
+                <div class="uptime-container">
+                    <span id="tiktok-uptime" class="uptime">00:00:00</span>
+                </div>
+                
+                <div id="tiktok-events" class="events-container"></div>
+            </div>
+            
+            <!-- Dual Panel Mode -->
+            <div id="dual-panel" class="panel dual-panel hidden">
+                <div class="dual-content">
+                    <div class="dual-side twitch-side">
+                        <h3>Twitch</h3>
+                        <div class="dual-stats">
+                            <span id="dual-twitch-viewers">0</span> viewers
+                        </div>
+                    </div>
+                    <div class="dual-divider"></div>
+                    <div class="dual-side tiktok-side">
+                        <h3>TikTok</h3>
+                        <div class="dual-stats">
+                            <span id="dual-tiktok-viewers">0</span> viewers
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Overlay -->
+        <div id="chat-overlay" class="chat-overlay hidden"></div>
+        
+        <!-- Alert Container -->
+        <div id="alert-container" class="alert-container"></div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="utils.js"></script>
+    <script src="themes.js"></script>
+    <script src="media.js"></script>
+    <script src="animations.js"></script>
+    <script src="particles.js"></script>
+    <script src="providers.js"></script>
+    <script src="widgets.js"></script>
+    <script src="commands.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

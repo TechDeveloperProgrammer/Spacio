@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Smart Stream Overlay - Browser Source</title>
+    
+    <!-- Preload critical assets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon (optional) -->
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+</head>
+<body class="overlay-body theme-default">
+    <!-- Main Container -->
+    <div id="overlay-container" class="overlay-container">
+        
+        <!-- Particle Canvas Layer -->
+        <canvas id="particle-canvas" class="particle-layer"></canvas>
+        
+        <!-- Background Layer -->
+        <div id="background-layer" class="background-layer"></div>
+        
+        <!-- Glassmorphism Overlay -->
+        <div id="glass-overlay" class="glass-overlay"></div>
+        
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="content-wrapper">
+            
+            <!-- Header Section -->
+            <header id="stream-header" class="stream-header">
+                <div class="header-left">
+                    <div class="avatar-container">
+                        <img id="streamer-avatar" src="assets/images/default-avatar.png" alt="Streamer Avatar" class="streamer-avatar">
+                        <div class="live-indicator">LIVE</div>
+                    </div>
+                    <div class="stream-info">
+                        <h1 id="stream-title" class="stream-title">Stream Title</h1>
+                        <p id="stream-category" class="stream-category">Category</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="viewer-count">
+                        <svg class="icon viewers-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                        <span id="viewer-count" class="count-number">0</span>
+                    </div>
+                    <div class="uptime-container">
+                        <svg class="icon uptime-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        <span id="uptime" class="uptime-text">00:00:00</span>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Platform Panels Container -->
+            <main id="platform-panels" class="platform-panels">
+                
+                <!-- Twitch Panel -->
+                <section id="twitch-panel" class="panel twitch-panel hidden">
+                    <div class="panel-header">
+                        <div class="platform-branding twitch-branding">
+                            <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                            </svg>
+                            <span>Twitch</span>
+                        </div>
+                        <div class="panel-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Followers</span>
+                                <span id="twitch-followers" class="stat-value">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Subscribers</span>
+                                <span id="twitch-subscribers" class="stat-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <div class="metrics-grid">
+                            <div class="metric-card bits-card">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                                <div class="metric-info">
+                                    <span class="metric-label">Bits</span>
+                                    <span id="twitch-bits" class="metric-value">0</span>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card gifts-card">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M20 12V5.26C20 4.59 19.41 4 18.68 4H16V2h-2v2h-4V2H8v2H5.32C4.59 4 4 4.59 4 5.26V12c0 2.21 1.79 4 4 4h1v6h2v-6h6v6h2v-6h1c2.21 0 4-1.79 4-4z"/>
+                                    </svg>
+                                </div>
+                                <div class="metric-info">
+                                    <span class="metric-label">Gift Subs</span>
+                                    <span id="twitch-gifts" class="metric-value">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Events Feed -->
+                        <div class="events-feed" id="twitch-events">
+                            <div class="event-placeholder">No recent events</div>
+                        </div>
+                        
+                        <!-- Goals Section -->
+                        <div class="goals-section" id="twitch-goals">
+                            <div class="goal-item">
+                                <div class="goal-header">
+                                    <span class="goal-title">Follower Goal</span>
+                                    <span class="goal-progress">0/1000</span>
+                                </div>
+                                <div class="goal-bar">
+                                    <div class="goal-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- TikTok Panel -->
+                <section id="tiktok-panel" class="panel tiktok-panel hidden">
+                    <div class="panel-header">
+                        <div class="platform-branding tiktok-branding">
+                            <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.53 0c-3.61 0-6.76 2.09-8.32 5.15-.12.24.11.5.38.5h2.55c.2 0 .38-.11.46-.29C8.54 3.54 10.37 2.3 12.53 2.3c.42 0 .83.04 1.22.12V7.1c0 .28.23.5.5.5h3.5c.28 0 .5-.22.5-.5V2.86c.89.59 1.93.94 3.03.94.28 0 .5-.22.5-.5V.5c0-.28-.22-.5-.5-.5-2.36 0-4.4-1.32-5.42-3.26C15.12.25 13.85 0 12.53 0z"/>
+                            </svg>
+                            <span>TikTok Live</span>
+                        </div>
+                        <div class="panel-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Likes</span>
+                                <span id="tiktok-likes" class="stat-value">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Diamonds</span>
+                                <span id="tiktok-diamonds" class="stat-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-content">
+                        <div class="metrics-grid">
+                            <div class="metric-card comments-card">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/>
+                                    </svg>
+                                </div>
+                                <div class="metric-info">
+                                    <span class="metric-label">Comments</span>
+                                    <span id="tiktok-comments" class="metric-value">0</span>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card shares-card">
+                                <div class="metric-icon">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+                                    </svg>
+                                </div>
+                                <div class="metric-info">
+                                    <span class="metric-label">Shares</span>
+                                    <span id="tiktok-shares" class="metric-value">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Events Feed -->
+                        <div class="events-feed" id="tiktok-events">
+                            <div class="event-placeholder">No recent events</div>
+                        </div>
+                        
+                        <!-- Goals Section -->
+                        <div class="goals-section" id="tiktok-goals">
+                            <div class="goal-item">
+                                <div class="goal-header">
+                                    <span class="goal-title">Like Goal</span>
+                                    <span class="goal-progress">0/10000</span>
+                                </div>
+                                <div class="goal-bar">
+                                    <div class="goal-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </main>
+            
+            <!-- Footer Section -->
+            <footer id="stream-footer" class="stream-footer">
+                <div class="recent-events" id="recent-events">
+                    <!-- Dynamic event notifications will appear here -->
+                </div>
+                <div class="social-links" id="social-links">
+                    <!-- Social media icons -->
+                </div>
+            </footer>
+            
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div id="loading-indicator" class="loading-indicator">
+            <div class="spinner"></div>
+            <span>Loading overlay...</span>
+        </div>
+        
+    </div>
+    
+    <!-- JavaScript Modules -->
+    <script src="config.js"></script>
+    <script src="utils.js"></script>
+    <script src="themes.js"></script>
+    <script src="media.js"></script>
+    <script src="animations.js"></script>
+    <script src="particles.js"></script>
+    <script src="providers.js"></script>
+    <script src="widgets.js"></script>
+    <script src="commands.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

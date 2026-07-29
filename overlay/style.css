@@ -1,0 +1,614 @@
+/* ============================================
+   SMART OVERLAY - MAIN STYLESHEET
+   Production-Ready Browser Source Overlay
+   ============================================ */
+
+/* CSS Reset & Base */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Default Theme Variables */
+    --primary-color: #9146ff;
+    --secondary-color: #ff0050;
+    --accent-color: #00f0ff;
+    --background-color: rgba(0, 0, 0, 0.8);
+    --text-color: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --blur-strength: 10px;
+    --glow-strength: 0 0 20px;
+    --border-radius: 12px;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition-speed: 0.3s;
+    --scale-factor: 1;
+    --opacity-level: 1;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    font-size: calc(16px * var(--scale-factor));
+}
+
+/* Main Container */
+.overlay-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Particle Canvas */
+#particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Background Layer */
+.background-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-image, transparent);
+    background-size: cover;
+    background-position: center;
+    opacity: var(--background-opacity, 0.5);
+    z-index: 0;
+    transition: opacity var(--transition-speed) ease;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 2;
+    transform: scale(var(--scale-factor));
+    transform-origin: top right;
+    opacity: var(--opacity-level);
+    transition: all var(--transition-speed) ease;
+}
+
+/* Panel Base Styles */
+.panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-strength));
+    -webkit-backdrop-filter: blur(var(--blur-strength));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    min-width: 320px;
+    max-width: 450px;
+    box-shadow: 
+        var(--glow-strength) rgba(var(--primary-rgb), 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: panelSlideIn 0.5s ease-out;
+    transform: translateX(0);
+    transition: all var(--transition-speed) ease;
+}
+
+.panel.hidden {
+    display: none;
+}
+
+@keyframes panelSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Panel Header */
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* Avatar Container */
+.avatar-container {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+.live-indicator {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: linear-gradient(135deg, #ff0000, #ff4444);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 12px;
+    border: 2px solid var(--glass-bg);
+    animation: pulse 1.5s infinite;
+}
+
+.live-indicator.tiktok {
+    background: linear-gradient(135deg, #00f0ff, #ff0050);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Stream Info */
+.stream-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.username {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stream-title {
+    font-size: 0.9em;
+    opacity: 0.9;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.category {
+    font-size: 0.8em;
+    opacity: 0.7;
+    color: var(--accent-color);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.stat-label {
+    font-size: 0.7em;
+    opacity: 0.7;
+    text-align: center;
+}
+
+/* Uptime Container */
+.uptime-container {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.uptime {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--primary-color);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+}
+
+/* Goals Container */
+.goals-container {
+    margin-bottom: 15px;
+}
+
+.goal-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.goal-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.goal-text {
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+/* Events Container */
+.events-container {
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) transparent;
+}
+
+.events-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.events-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.events-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.event-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    margin-bottom: 5px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary-color);
+    animation: eventSlideIn 0.3s ease;
+}
+
+@keyframes eventSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.event-icon {
+    font-size: 1.2em;
+}
+
+.event-text {
+    flex: 1;
+    font-size: 0.85em;
+}
+
+.event-time {
+    font-size: 0.7em;
+    opacity: 0.6;
+}
+
+/* Dual Panel */
+.dual-panel {
+    min-width: 400px;
+}
+
+.dual-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dual-side {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+}
+
+.dual-side h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.twitch-side h3 {
+    color: #9146ff;
+}
+
+.tiktok-side h3 {
+    color: #ff0050;
+}
+
+.dual-stats {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.dual-divider {
+    width: 1px;
+    height: 60px;
+    background: var(--glass-border);
+}
+
+/* Chat Overlay */
+.chat-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 350px;
+    max-height: 400px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-strength));
+    -webkit-backdrop-filter: blur(var(--blur-strength));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    overflow-y: auto;
+    z-index: 3;
+}
+
+.chat-message {
+    margin-bottom: 8px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    font-size: 0.9em;
+    animation: fadeIn 0.3s ease;
+}
+
+.chat-username {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.chat-text {
+    opacity: 0.9;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Alert Container */
+.alert-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.alert {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-strength));
+    -webkit-backdrop-filter: blur(var(--blur-strength));
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 30px 50px;
+    text-align: center;
+    box-shadow: 0 0 50px var(--primary-color);
+    animation: alertPop 0.5s ease;
+}
+
+@keyframes alertPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.alert-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.alert-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.alert-message {
+    font-size: 1em;
+    opacity: 0.9;
+}
+
+/* Twitch Specific Styles */
+.twitch-panel {
+    --primary-color: #9146ff;
+    --primary-rgb: 145, 70, 255;
+}
+
+/* TikTok Specific Styles */
+.tiktok-panel {
+    --primary-color: #ff0050;
+    --primary-rgb: 255, 0, 80;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .content-wrapper {
+        top: 10px;
+        right: 10px;
+        transform: scale(calc(var(--scale-factor) * 0.8));
+    }
+    
+    .panel {
+        min-width: 280px;
+        padding: 15px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .content-wrapper {
+        transform: scale(calc(var(--scale-factor) * 0.6));
+    }
+    
+    .panel {
+        min-width: 250px;
+    }
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Smooth Counter Animation */
+.counter-animate {
+    transition: all 0.5s ease;
+}
+
+/* Neon Glow Effect */
+.neon-glow {
+    text-shadow: 
+        0 0 5px var(--primary-color),
+        0 0 10px var(--primary-color),
+        0 0 20px var(--primary-color),
+        0 0 40px var(--primary-color);
+}
+
+/* Animated Border */
+.animated-border {
+    position: relative;
+    overflow: hidden;
+}
+
+.animated-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--primary-color),
+        transparent
+    );
+    animation: borderShine 2s infinite;
+}
+
+@keyframes borderShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Light Sweep Effect */
+.light-sweep {
+    position: relative;
+    overflow: hidden;
+}
+
+.light-sweep::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    animation: lightSweep 3s infinite;
+}
+
+@keyframes lightSweep {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* Print Styles */
+@media print {
+    .overlay-container {
+        display: none;
+    }
+}
